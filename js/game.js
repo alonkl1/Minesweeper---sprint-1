@@ -1,18 +1,26 @@
 'use strict'
 
-const WALL = '&#8251;'
-const FOOD = '&middot;'
-const SUPERFOOD = '&#169;'
-const EMPTY = ' '
+// const WALL = '&#8251;'
+// const FOOD = '&middot;'
+// const SUPERFOOD = '&#169;'
+// const EMPTY = ' '
 
 const gGame = {
-    score: 0,
     isOn: false,
-    foodCount: 0
+    revealedCount: 0,
+    markedCount: 0,
+    secsPassed: 0
 }
+
+const gLevel = {
+    SIZE: 4,
+    MINES: 2
+}
+
+
 var gBoard
 
-function init() {
+function onInit() {
     console.log('hello')
 
     const elModal = document.querySelector(".modal ")
@@ -25,45 +33,79 @@ function init() {
 
 
     gBoard = buildBoard()
+    console.table(gBoard)
 
-    updateScore(0)
-
-    createPacman(gBoard)
-    createGhosts(gBoard)
 
     renderBoard(gBoard, '.board-container')
     gGame.isOn = true
 }
 
 function buildBoard() {
-    const size = 10
+    const size = 4
     const board = []
 
     for (var i = 0; i < size; i++) {
         board.push([])
 
         for (var j = 0; j < size; j++) {
-            board[i][j] = FOOD
-
-            if (i === 0 || i === size - 1 ||
-                j === 0 || j === size - 1 ||
-                (j === 3 && i > 4 && i < size - 2)) {
-                board[i][j] = WALL
-            }
-
-            else if (i === 1 && j === 1 ||
-                i === 1 && j === size - 2 ||
-                i === size - 2 && j === 1 ||
-                i === size - 2 && j === size - 2)
-                board[i][j] = SUPERFOOD
-
-            else {
-                gGame.foodCount++
-            }
+            board[i][j] = createCell()
         }
     }
-    gGame.foodCount--
+    var i = 0
+    while (i < gLevel.MINES) {
+        var idxI = getRandomIntInclusive(0, board.length - 1)
+        var idxJ = getRandomIntInclusive(0, board[0].length - 1)
+        const currCell = board[idxI][idxJ]
+        if (currCell.isMine) continue
+        currCell.isMine = true
+        i++
+    }
+
+    setMinesNegsCount(board)
+
+
     return board
+}
+
+function setMinesNegsCount(board) {
+    for (var i = 0; i < board.length; i++) {
+        for (var j = 0; j < board[i].length; j++) {
+            const currCell = board[i][j]
+
+            if (currCell.isMine) continue
+
+            currCell.minesAroundCount = countMinesAround(board, i, j)
+        }
+    }
+}
+
+function countMinesAround(board, idxI, idxJ) {
+    var count = 0
+    for (var i = idxI - 1; i <= idxI + 1; i++) {
+
+        if (i < 0 || i >= board.length) continue
+
+        for (var j = idxJ - 1; j <= idxJ+1; j++) {
+
+            if (j < 0 || j >= board[i].length) continue
+
+            if (i === idxI && j === idxJ) continue
+
+            if (board[i][j].isMine) count++
+        }
+    }
+    return count
+}
+
+
+function createCell() {
+    var cell = {}
+    cell.minesAroundCount = 4
+    cell.isReaveled = false
+    cell.isMine = false
+    cell.isMarked = false
+
+    return cell
 }
 
 function updateScore(diff) {
@@ -103,4 +145,18 @@ function handleWin() {
 
     const elModal = document.querySelector(".win")
     elModal.style.display = 'block'
+}
+
+
+
+function onCellMarked(i, j){
+
+}
+
+function checkGameOver(){
+
+}
+
+function checkGameOver(){
+
 }
