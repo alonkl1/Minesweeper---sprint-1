@@ -1,5 +1,5 @@
 body {
-    background-color: rgb(180, 42, 146);
+    background-color: black;
 	text-align: center;
 	color: lightgray;
     font-family: Arial, Helvetica, sans-serif;
@@ -14,12 +14,6 @@ table {
 	width: 40px;
 	height: 40px;
 	font-size: 1.5em;
-	border: 1px solid blue;
-}
-
-.cell img{
-	width: 80%;
-	height:auto;
 }
 
 .modal{
@@ -29,14 +23,4 @@ table {
 .modal button{
 	cursor: pointer;
 	background-color: brown;
-}
-
-.header{
-	width: 200px;
-	height: auto;
-}
-
-footer{
-	text-align: center;
-	color: white;
 }
