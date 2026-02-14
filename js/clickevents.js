@@ -6,6 +6,8 @@
 // const EMPTY = ' '
 
 function onCellClicked(elCell, i, j) {
+    if (!gGame.isOn) return
+
     //console.log ("I: " + i + " J: " +j +" \n is clicked")
     const currCell = gBoard[i][j]
     if (currCell.isRevealed || currCell.isMarked) return
@@ -18,9 +20,16 @@ function onCellClicked(elCell, i, j) {
         expandReveal(gBoard, elCell, i, j)
 
     }
-    
-        gGame.revealedCount++
-    
+    if (currCell.isMine) {
+        console.log("MIIIIIIIIIINE")
+        gGame.lives--
+        renderLives()
+        if (gGame.lives === 0) GameOver()
+
+    }
+
+
+    gGame.revealedCount++
 
     currCell.isRevealed = true
 
@@ -32,7 +41,7 @@ function onCellClicked(elCell, i, j) {
 
     if (gGame.markedCount + gGame.revealedCount === (gLevel.SIZE * gLevel.SIZE)) {
         console.log("I CHECK GAME OVER")
-        if (checkGameOver) console.log("WIN")
+        if (checkGameOver()) console.log("WIN")
         else console.log("LOST")
     }
 
@@ -43,6 +52,7 @@ function onCellClicked(elCell, i, j) {
 
 
 function onCellMarked(event, elCell, i, j) {
+    if (!gGame.isOn) return
 
     console.log("RIGGGHT CLICK")
     event.preventDefault()
@@ -54,7 +64,7 @@ function onCellMarked(event, elCell, i, j) {
 
     if (!currCell.isMarked) {
         var strHTML = ''
-        strHTML += `${MINE_IMG}`
+        strHTML += `${FLAG_IMG}`
 
         elSpan.innerHTML = strHTML
 
