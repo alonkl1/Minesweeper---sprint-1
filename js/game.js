@@ -8,12 +8,14 @@
 const FLAG_IMG = '<img src="img/flag.png" alt="mine">'
 const BOMB_IMG = '<img src="img/bomb.png" alt="bomb">'
 
+var gTimerInterval
+
 const gGame = {
     isOn: false,
     revealedCount: 0,
     markedCount: 0,
     secsPassed: 0,
-    lives: 3
+    lives: 2
 }
 
 const gLevel = {
@@ -34,7 +36,7 @@ function onInit() {
 
     zeroGlobalStats()
     renderLives()
-    
+
 
     console.log("CHANGED SMILEY")
     const elModal = document.querySelector(".modal")
@@ -85,17 +87,17 @@ function placeMines(board, i, j) {
 
     var loopCounter = 0
 
-    while (loopCounter < gLevel.MINES) {
-        var idxI = getRandomIntInclusive(0, board.length - 1)
-        var idxJ = getRandomIntInclusive(0, board[0].length - 1)
-        const currCell = board[idxI][idxJ]
-        if (currCell.isMine || idxI === i && idxJ === j) continue
-        currCell.isMine = true
-        loopCounter++
-    }
+    // while (loopCounter < gLevel.MINES) {
+    //     var idxI = getRandomIntInclusive(0, board.length - 1)
+    //     var idxJ = getRandomIntInclusive(0, board[0].length - 1)
+    //     const currCell = board[idxI][idxJ]
+    //     if (currCell.isMine || idxI === i && idxJ === j) continue
+    //     currCell.isMine = true
+    //     loopCounter++
+    // }
 
-    // board[1][1].isMine=true
-    // board[2][3].isMine=true
+    board[1][1].isMine = true
+    board[2][3].isMine = true
     gFirstclick = false
     setMinesNegsCount(board)
 
@@ -133,28 +135,37 @@ function countMinesAround(board, idxI, idxJ) {
     return count
 }
 
-function expandReveal(board, elCell, idxI, idxJ) {
-    for (var i = idxI - 1; i <= idxI + 1; i++) {
-
+function expandReveal(board, idxI, idxJ) {
+    for (let i = idxI - 1; i <= idxI + 1; i++) {
+        // skip if out of board
         if (i < 0 || i >= board.length) continue
 
-        for (var j = idxJ - 1; j <= idxJ + 1; j++) {
-
+        for (let j = idxJ - 1; j <= idxJ + 1; j++) {
+            // skip if out of board
             if (j < 0 || j >= board[i].length) continue
-
+            // skip if the same cell
             if (i === idxI && j === idxJ) continue
 
             const currCell = board[i][j]
-            //If cell alreay revealed continues
-            if (currCell.isRevealed) continue
 
-            const elCurrCell = document.querySelector(`.cell-${i}-${j}`)
+            //If cell alreay revealed or is marked continues
+            if (currCell.isRevealed || currCell.isMarked || currCell.isMine) continue
             currCell.isRevealed = true
             gGame.revealedCount++
-            var strHTML = ''
-            strHTML += `${(currCell.isMine) ? BOMB_IMG : currCell.minesAroundCount} `
-            elCurrCell.innerHTML = strHTML
+            
+            const elCurrCell = document.querySelector(`.cell-${i}-${j} span`)
+            elCurrCell.innerText = (currCell.minesAroundCount === 0 ? '0' : currCell.minesAroundCount)
+            
+            if (currCell.minesAroundCount === 0) {
+                expandReveal(board,i,j)
+            }
 
+
+            // var strHTML = ''
+            // strHTML += `${(currCell.isMine) ? BOMB_IMG : currCell.minesAroundCount} `
+            // elCurrCell.innerHTML = strHTML
+
+                  
         }
     }
 
@@ -162,7 +173,7 @@ function expandReveal(board, elCell, idxI, idxJ) {
 
 function createCell() {
     var cell = {}
-    cell.minesAroundCount = 4
+    cell.minesAroundCount = 0
     cell.isRevealed = false
     cell.isMine = false
     cell.isMarked = false
@@ -170,27 +181,18 @@ function createCell() {
     return cell
 }
 
-function handleWin() {
-    console.log('WINNER')
-    gGame.isOn = false
-
-    clearInterval(gGhostsInterval)
-
-    const elModal = document.querySelector(".win")
-    elModal.style.display = 'block'
-}
 
 function checkGameOver() {
-    for (var i = 0; i < gLevel.SIZE; i++) {
-        for (var j = 0; j < gLevel.SIZE; j++) {
-            const currCell=gBoard[i][j]
-            currCell = gBoard[i][j]
-            if (!currCell.isMine && !currCell.isRevealed) {
-                return false               
-            }
-        }
-    }
-    return true
+    // for (var i = 0; i < gLevel.SIZE; i++) {
+    //     for (var j = 0; j < gLevel.SIZE; j++) {
+    //         const currCell = gBoard[i][j]
+    //         if (!currCell.isMine && !currCell.isRevealed) {
+    //             return false
+    //         }
+    //     }
+    // }
+    if (gGame.revealedCount + gGame.markedCount === gLevel.SIZE ** 2) return true
+
 }
 
 function GameOver() {
@@ -206,9 +208,8 @@ function renderLives() {
     elLives.innerText = gGame.lives
 }
 
-function zeroGlobalStats(){
-    gGame.markedCount=0
-    gGame.revealedCount=0
-    gGame.lives=3
-    gGame.secsPassed=0
+function zeroGlobalStats() {
+    gGame.markedCount = 0
+    gGame.revealedCount = 0
+    gGame.secsPassed = 0
 }

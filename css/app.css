@@ -8,6 +8,10 @@ body {
 table {
 	margin: 100px auto;
 	border: 1px solid lightgray;
+
+	border-collapse: separate;
+    border-spacing: 2px; 
+    margin: 0 auto;
 }
 
 .cell {
@@ -23,7 +27,7 @@ table {
 }
 
 .modal{
- margin: -80px auto;
+ margin: 80px auto;
 
 }
 .modal button{
@@ -45,3 +49,6 @@ footer{
 	height: 50px;
 	width:auto;
 }
+
+
+

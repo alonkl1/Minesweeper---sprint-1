@@ -43,3 +43,13 @@ function getRandomHexColor() {
     // to ensure a valid 6-digit hex code.
     return "#" + color.padStart(6, '0');
 }
+
+function handleTime(){
+    gTimerInterval = setInterval(()=> {
+        gGame.secsPassed++; 
+        
+        const elTimer = document.querySelector('.timer span');
+        elTimer.innerText = gGame.secsPassed; 
+        
+    }, 1000); 
+}

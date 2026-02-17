@@ -14,12 +14,19 @@ function onCellClicked(elCell, i, j) {
 
     if (gFirstclick) {
         placeMines(gBoard, i, j)
-    }
 
+        handleTime()
+    }
+     gGame.revealedCount++
+        currCell.isRevealed = true
     if (currCell.minesAroundCount === 0) {
-        expandReveal(gBoard, elCell, i, j)
+
+        expandReveal(gBoard, i, j)
 
     }
+    // else {
+       
+    // }
     if (currCell.isMine) {
         console.log("MIIIIIIIIIINE")
         gGame.lives--
@@ -28,11 +35,7 @@ function onCellClicked(elCell, i, j) {
 
     }
 
-
-    gGame.revealedCount++
-
-    currCell.isRevealed = true
-
+    
     var strHTML = ''
     strHTML += `${(currCell.isMine) ? BOMB_IMG : currCell.minesAroundCount} `
     elCell.innerHTML = strHTML
@@ -77,4 +80,6 @@ function onCellMarked(event, elCell, i, j) {
         currCell.isMarked = false
         gGame.markedCount--
     }
+
+    checkGameOver()
 }
