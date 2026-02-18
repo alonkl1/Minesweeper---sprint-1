@@ -1,17 +1,23 @@
 body {
-    background-color: rgb(180, 42, 146);
+    background-color: rgb(232, 180, 89);
 	text-align: center;
 	color: lightgray;
     font-family: Arial, Helvetica, sans-serif;
 }
 
 table {
+	position: absolute;
 	margin: 100px auto;
 	border: 1px solid lightgray;
-
+	background-color: rgba(89, 123, 216,1);
 	border-collapse: separate;
     border-spacing: 2px; 
     margin: 0 auto;
+	z-index: 2;
+	top: 27%;
+	left: 31.5%;
+	/* transform: translate(-50%, -50%); */
+	
 }
 
 .cell {
@@ -36,7 +42,7 @@ table {
 }
 
 .header{
-	width: 100px;
+	width: 300px;
 	height: auto;
 }
 
@@ -46,8 +52,39 @@ footer{
 }
 
 .smiley{
-	height: 50px;
+	height: 100px;
 	width:auto;
+}
+
+.ship{
+	/* position: relative;
+	top:0px;
+	left:420px;
+	height: 300px;
+	width:auto;*/
+	z-index: 1 ;
+	display: block; 
+    height: 390px; 
+    width: auto; 
+	border: 10px solid brown;
+	border-radius: 5px;
+	border-color: rgb(126, 81, 49);
+}
+
+.board-container{
+	position:relative;
+	display: inline-block;
+	margin: -5px auto;
+	width: fit-content
+}
+
+.lives{
+	color:brown
+}
+
+.lives span{
+	font-size: 1.5em;
+	font-weight: bold;
 }
 
 

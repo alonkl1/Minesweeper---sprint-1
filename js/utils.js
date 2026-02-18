@@ -3,10 +3,10 @@
 
 function renderBoard(mat, selector) {
 
-    var strHTML = '<table><tbody>'
+    var strHTML = '<img src="img/Pirateship.png" alt="" class="ship"><table><tbody>'
     for (var i = 0; i < mat.length; i++) {
 
-        strHTML += '<tr>'
+        strHTML += '<tr> '
         for (var j = 0; j < mat[0].length; j++) {
 
             const cell = mat[i][j]
