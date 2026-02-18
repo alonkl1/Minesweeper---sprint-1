@@ -83,5 +83,13 @@ function onCellMarked(event, elCell, i, j) {
         gGame.markedCount--
     }
 
-    checkGameOver()
+    if (checkGameOver()){
+        if (gGame.markedCount === gLevel.MINES){
+            gameOver(true)
+        }
+        else{
+            gameOver(false)
+        }
+        
+    } 
 }
