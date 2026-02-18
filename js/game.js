@@ -7,6 +7,7 @@
 
 const FLAG_IMG = '<img src="img/flag.png" alt="mine">'
 const BOMB_IMG = '<img src="img/bomb.png" alt="bomb">'
+const EXPLODED_IMG = '<img src="img/exploded.png" alt="bomb">'
 
 var gTimerInterval
 var gIntervalId
@@ -21,7 +22,7 @@ const gGame = {
 
 const gLevel = {
     SIZE: 4,
-    MINES: 2
+    MINES: 3
 }
 
 
@@ -91,19 +92,21 @@ function placeMines(board, i, j) {
 
     var loopCounter = 0
 
-    // while (loopCounter < gLevel.MINES) {
-    //     var idxI = getRandomIntInclusive(0, board.length - 1)
-    //     var idxJ = getRandomIntInclusive(0, board[0].length - 1)
-    //     const currCell = board[idxI][idxJ]
-    //     if (currCell.isMine || idxI === i && idxJ === j) continue
-    //     currCell.isMine = true
-    //     loopCounter++
-    // }
-
-    board[1][1].isMine = true
-    board[2][3].isMine = true
+    while (loopCounter < gLevel.MINES) {
+        var idxI = getRandomIntInclusive(0, board.length - 1)
+        var idxJ = getRandomIntInclusive(0, board[0].length - 1)
+        const currCell = board[idxI][idxJ]
+        if (currCell.isMine || idxI === i && idxJ === j) continue
+        currCell.isMine = true
+        loopCounter++
+    }
+    
+    // board[1][1].isMine = true
+    // board[2][3].isMine = true
+    // board[2][2].isMine = true
+    
     gFirstclick = false
-    setMinesNegsCount(board)
+     setMinesNegsCount(board)
 
 
 
@@ -199,7 +202,7 @@ function checkGameOver() {
 
 }
 
-function GameOver(isWin) {
+function gameOver(isWin) {
     const elSmiley = document.querySelector('.smiley')
     if (isWin) {
         elSmiley.src = 'img/happy.png'
@@ -208,11 +211,12 @@ function GameOver(isWin) {
 
     }
     else {
-
+        showAllBombs()
         elSmiley.src = 'img/sad.png'
         console.log("CHANGED SMILEY")
         gGame.isOn = false
     }
+    
     clearInterval(gIntervalId)
 }
 

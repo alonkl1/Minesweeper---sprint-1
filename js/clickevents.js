@@ -24,28 +24,26 @@ function onCellClicked(elCell, i, j) {
         expandReveal(gBoard, i, j)
 
     }
-    // else {
 
-    // }
     if (currCell.isMine) {
         console.log("MIIIIIIIIIINE")
         gGame.lives--
         renderLives()
-        if (gGame.lives === 0) GameOver()
+        if (gGame.lives === 0) gameOver(false)
 
     }
 
 
     var strHTML = ''
-    strHTML += `${(currCell.isMine) ? BOMB_IMG : currCell.minesAroundCount} `
+    strHTML += `${(currCell.isMine) ? EXPLODED_IMG : currCell.minesAroundCount} `
     elCell.innerHTML = strHTML
 
     console.log("MARKED COUNT: " + gGame.markedCount + "REVEALED COUNT: " + gGame.revealedCount)
 
     if (gGame.markedCount + gGame.revealedCount === (gLevel.SIZE * gLevel.SIZE)) {
         console.log("I CHECK GAME OVER")
-        if (checkGameOver()) GameOver(true)
-        else GameOver(false)
+        if (checkGameOver()) gameOver(true)
+        else gameOver(false)
     }
 
 

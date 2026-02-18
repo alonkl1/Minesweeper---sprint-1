@@ -44,20 +44,35 @@ function getRandomHexColor() {
     return "#" + color.padStart(6, '0');
 }
 
-function handleTime(){
-    gTimerInterval = setInterval(()=> {
-        gGame.secsPassed++; 
-        
+function handleTime() {
+    gTimerInterval = setInterval(() => {
+        gGame.secsPassed++;
+
         const elTimer = document.querySelector('.timer span');
-        elTimer.innerText = gGame.secsPassed; 
-        
-    }, 1000); 
+        elTimer.innerText = gGame.secsPassed;
+
+    }, 1000);
 }
 
 function getFormatedTimePassed(timeDiff) {
-	const seconds = Math.floor(timeDiff / 1000)
-	const milliSeconds = (timeDiff - seconds * 1000 + '').padStart(3, '0')
+    const seconds = Math.floor(timeDiff / 1000)
+    const milliSeconds = (timeDiff - seconds * 1000 + '').padStart(3, '0')
 
-	return `${(seconds + '').padStart(2, '0')}:${milliSeconds}`
+    return `${(seconds + '').padStart(2, '0')}:${milliSeconds}`
 }
 
+
+function showAllBombs() {
+    for (var i = 0; i < gBoard.length; i++) {
+        for (var j = 0; j < gBoard[i].length; j++) {
+            const currCell = gBoard[i][j]
+            if (currCell.isMine && !currCell.isRevealed) {
+                var elCell=document.querySelector(`.cell-${i}-${j}`)
+                var strHTML = ''
+                strHTML += BOMB_IMG
+                elCell.innerHTML = strHTML
+            }
+
+        }
+    }
+}
