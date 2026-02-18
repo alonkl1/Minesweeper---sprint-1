@@ -8,7 +8,7 @@
 function onCellClicked(elCell, i, j) {
     if (!gGame.isOn) return
 
-    console.log ("I: " + i + " J: " +j +" \n is clicked")
+    console.log("I: " + i + " J: " + j + " \n is clicked")
     const currCell = gBoard[i][j]
     if (currCell.isRevealed || currCell.isMarked) return
 
@@ -19,24 +19,28 @@ function onCellClicked(elCell, i, j) {
     }
     gGame.revealedCount++
     currCell.isRevealed = true
-    if (currCell.minesAroundCount === 0) {
 
-        expandReveal(gBoard, i, j)
-
-    }
+    var strHTML = ''
 
     if (currCell.isMine) {
         console.log("MIIIIIIIIIINE")
         gGame.lives--
         renderLives()
         if (gGame.lives === 0) gameOver(false)
-
+        strHTML += EXPLODED_IMG
+        elCell.innerHTML = strHTML
     }
 
+    else if (currCell.minesAroundCount === 0) {
+        
+        elCell.classList.add('revealed')
+        expandReveal(gBoard, i, j)
+    }
 
-    var strHTML = ''
-    strHTML += `${(currCell.isMine) ? EXPLODED_IMG : currCell.minesAroundCount} `
-    elCell.innerHTML = strHTML
+    else{
+        strHTML += currCell.minesAroundCount
+        elCell.innerHTML = strHTML
+    }
 
     console.log("MARKED COUNT: " + gGame.markedCount + "REVEALED COUNT: " + gGame.revealedCount)
 

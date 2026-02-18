@@ -21,8 +21,8 @@ const gGame = {
 }
 
 const gLevel = {
-    SIZE: 4,
-    MINES: 3
+    SIZE: 9,
+    MINES: 10
 }
 
 
@@ -161,9 +161,12 @@ function expandReveal(board, idxI, idxJ) {
             gGame.revealedCount++
 
             const elCurrCell = document.querySelector(`.cell-${i}-${j} span`)
-            elCurrCell.innerText = (currCell.minesAroundCount === 0 ? '0' : currCell.minesAroundCount)
+            elCurrCell.innerText = (currCell.minesAroundCount === 0 ? ' ' : currCell.minesAroundCount)
+            
 
             if (currCell.minesAroundCount === 0) {
+                const elCurrCell = document.querySelector(`.cell-${i}-${j}`)
+                elCurrCell.classList.add('revealed')
                 expandReveal(board, i, j)
             }
 
