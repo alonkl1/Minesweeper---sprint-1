@@ -9,6 +9,7 @@ const FLAG_IMG = '<img src="img/flag.png" alt="mine">'
 const BOMB_IMG = '<img src="img/bomb.png" alt="bomb">'
 
 var gTimerInterval
+var gIntervalId
 
 const gGame = {
     isOn: false,
@@ -47,6 +48,9 @@ function onInit() {
     gFirstclick = true
 
     gGame.score = 0
+    console.log("updateing lives to 2!!!!")
+    gGame.lives = 2
+    renderLives()
 
     gBoard = buildBoard()
     console.table(gBoard)
@@ -152,12 +156,12 @@ function expandReveal(board, idxI, idxJ) {
             if (currCell.isRevealed || currCell.isMarked || currCell.isMine) continue
             currCell.isRevealed = true
             gGame.revealedCount++
-            
+
             const elCurrCell = document.querySelector(`.cell-${i}-${j} span`)
             elCurrCell.innerText = (currCell.minesAroundCount === 0 ? '0' : currCell.minesAroundCount)
-            
+
             if (currCell.minesAroundCount === 0) {
-                expandReveal(board,i,j)
+                expandReveal(board, i, j)
             }
 
 
@@ -165,7 +169,7 @@ function expandReveal(board, idxI, idxJ) {
             // strHTML += `${(currCell.isMine) ? BOMB_IMG : currCell.minesAroundCount} `
             // elCurrCell.innerHTML = strHTML
 
-                  
+
         }
     }
 
@@ -195,11 +199,21 @@ function checkGameOver() {
 
 }
 
-function GameOver() {
+function GameOver(isWin) {
     const elSmiley = document.querySelector('.smiley')
-    elSmiley.src = 'img/sad.png'
-    console.log("CHANGED SMILEY")
-    gGame.isOn = false
+    if (isWin) {
+        elSmiley.src = 'img/happy.png'
+        console.log("CHANGED SMILEY")
+        gGame.isOn = false
+
+    }
+    else {
+
+        elSmiley.src = 'img/sad.png'
+        console.log("CHANGED SMILEY")
+        gGame.isOn = false
+    }
+    clearInterval(gIntervalId)
 }
 
 function renderLives() {
@@ -213,3 +227,16 @@ function zeroGlobalStats() {
     gGame.revealedCount = 0
     gGame.secsPassed = 0
 }
+
+function startTimer() {
+    const elTimer = document.querySelector('.timer')
+    const startTime = Date.now()
+
+    gIntervalId = setInterval(() => {
+        const timeDiff = Date.now() - startTime
+        const timePassed = getFormatedTimePassed(timeDiff)
+        elTimer.innerText = timePassed
+    }, 37)
+}
+
+

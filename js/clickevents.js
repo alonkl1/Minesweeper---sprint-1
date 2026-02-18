@@ -8,24 +8,24 @@
 function onCellClicked(elCell, i, j) {
     if (!gGame.isOn) return
 
-    //console.log ("I: " + i + " J: " +j +" \n is clicked")
+    console.log ("I: " + i + " J: " +j +" \n is clicked")
     const currCell = gBoard[i][j]
     if (currCell.isRevealed || currCell.isMarked) return
 
     if (gFirstclick) {
         placeMines(gBoard, i, j)
-
-        handleTime()
+        startTimer()
+        //handleTime()
     }
-     gGame.revealedCount++
-        currCell.isRevealed = true
+    gGame.revealedCount++
+    currCell.isRevealed = true
     if (currCell.minesAroundCount === 0) {
 
         expandReveal(gBoard, i, j)
 
     }
     // else {
-       
+
     // }
     if (currCell.isMine) {
         console.log("MIIIIIIIIIINE")
@@ -35,7 +35,7 @@ function onCellClicked(elCell, i, j) {
 
     }
 
-    
+
     var strHTML = ''
     strHTML += `${(currCell.isMine) ? BOMB_IMG : currCell.minesAroundCount} `
     elCell.innerHTML = strHTML
@@ -44,8 +44,8 @@ function onCellClicked(elCell, i, j) {
 
     if (gGame.markedCount + gGame.revealedCount === (gLevel.SIZE * gLevel.SIZE)) {
         console.log("I CHECK GAME OVER")
-        if (checkGameOver()) console.log("WIN")
-        else console.log("LOST")
+        if (checkGameOver()) GameOver(true)
+        else GameOver(false)
     }
 
 

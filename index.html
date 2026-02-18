@@ -13,32 +13,29 @@
     <h1 class="title">MINESWEEPER </h1>
     <img src="img/Minesweeeper.webp" alt="" class="header">
     <h2 class="lives">LIVES: <span>3</span></h2>
-    <h2 class="timer">Time: <span>0</span></h2>
+    <!-- <h2 class="timer">Time: <span>0</span></h2> -->
+    <div class="timer-container">
+        <span class="timer">00:000</span>
+    </div>
     <div class="smiley-container">
-        <img src="img/normal.png" 
-        alt="" 
-        class="smiley"
-        onClick="onInit()">
+        <img src="img/normal.png" alt="" class="smiley" onClick="onInit()">
     </div>
 
-    <div 
-    class="board-container">
+    <div class="board-container">
     </div>
 
     <!-- <div class="win" style="display: none;">
         <h3>VERY NICE!!!!</h3>
         <button onclick="onInit()"> Play Again </button>
     </div> -->
-    <div 
-    class="modal" style="display: none;">
+    <div class="modal" style="display: none;">
 
         <h3>Game Over</h3>
 
-        <button
-         onclick="onInit()">
-          Play Again 
+        <button onclick="onInit()">
+            Play Again
         </button>
-        
+
     </div>
 
     <footer>
